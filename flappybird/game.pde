@@ -4,10 +4,16 @@ public class Game extends Tickable {
     protected ObstaclePair lastAdded;
     protected boolean started = false;
     protected boolean isGameOver = false;
+    protected ScoreManager score;
+    protected FloorPair floor;
+
     public Game() {
         player = new Player();
-        obstacles = new ArrayList < ObstaclePair > ();
+        obstacles = new ArrayList <ObstaclePair> ();
+        score = new ScoreManager();
+        floor = new FloorPair();
     }
+
     private ObstaclePair getMinXCoordianteObstacle() {
         ObstaclePair min = null;
         for (ObstaclePair pair: obstacles) {
@@ -20,6 +26,7 @@ public class Game extends Tickable {
         ObstaclePair min = getMinXCoordianteObstacle();
         if (obstacles.size() < 2 && (min == null || min.getX() < width / 2)) {
             obstacles.add(new ObstaclePair());
+            score.incScore();
         }
     }
     private void deleteOffScreenObstacles() {
@@ -41,15 +48,26 @@ public class Game extends Tickable {
     }
     public void tick() {
         if(isGameOver) return;
+        floor.tick();
         player.tick();
-        for (ObstaclePair pair: obstacles) {
-            pair.tick();
+        if (started) {
+            for (ObstaclePair pair: obstacles) {
+                pair.tick();
+            }
+            deleteOffScreenObstacles();
+            addNewObstacle();
+            if(checkCollisions()){
+                isGameOver = true;
+                GameOverMenu menu = new GameOverMenu(this.score.getScore(), this::restartGame);
+            }
+            score.tick();
         }
-        deleteOffScreenObstacles();
-        addNewObstacle();
-        if(checkCollisions()){
-          isGameOver = true;
-        }
+    }
+    private void restartGame() {
+        started = false;
+        score.setScore(-1);
+        obstacles = new ArrayList <ObstaclePair> ();
+        isGameOver = false;
     }
     public void start(){
       started = true;
