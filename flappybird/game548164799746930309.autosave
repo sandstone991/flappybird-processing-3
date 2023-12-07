@@ -6,7 +6,7 @@ public class Game extends Tickable {
     protected boolean isGameOver = false;
     protected ScoreManager score;
     protected FloorPair floor;
-    protected GameOverMenu gameOverMenu;
+
     public Game() {
         player = new Player();
         obstacles = new ArrayList <ObstaclePair> ();
@@ -44,19 +44,11 @@ public class Game extends Tickable {
         for (ObstaclePair pair: obstacles) {
             if(pair.collidesWithPlayer(player)) return true;
         }
-        if(floor.collidesWithPlayer(player)) return true;
-        if(player.getY() < 0) return true;
         return false;
     }
     public void tick() {
-        if(isGameOver) {
-            if(gameOverMenu == null) {
-                gameOverMenu = new GameOverMenu(score.getScore());
-            }
-            gameOverMenu.tick();
-            return;
-        }
-       
+        if(isGameOver) return;
+        floor.tick();
         player.tick();
         if (started) {
             for (ObstaclePair pair: obstacles) {
@@ -66,21 +58,16 @@ public class Game extends Tickable {
             addNewObstacle();
             if(checkCollisions()){
                 isGameOver = true;
-                // GameOverMenu menu = new GameOverMenu(this.score.getScore(), this::restartGame);
+                //GameOverMenu menu = new GameOverMenu(this.score.getScore(), this::restartGame);
             }
             score.tick();
         }
-        floor.tick();
     }
-    private void restart() {
+    private void restartGame() {
         started = false;
         score.setScore(-1);
         obstacles = new ArrayList <ObstaclePair> ();
         isGameOver = false;
-        player = new Player();
-    }
-    public boolean isGameOver(){
-        return isGameOver;
     }
     public void start(){
       started = true;

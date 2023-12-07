@@ -13,14 +13,14 @@ public class Floor extends Entity {
 public class FloorPair extends Tickable{
     private Floor ent1;
     private Floor ent2;
-
+    private final int speed = 1;
     public FloorPair() {
         ent1 = new Floor(0 );
         ent2 = new Floor(-width);
     }
 
     public void tick() {
-       ent1.moveTo((ent1.getX() + 2) % width, ent1.getY());
+       ent1.moveTo((ent1.getX() + speed) % width, ent1.getY());
        if (ent1.getX() == width) {
         ent2.moveTo(-width , ent2.getY());
        } else {
@@ -28,5 +28,8 @@ public class FloorPair extends Tickable{
        }
         ent1.tick();
         ent2.tick();
+    }
+    public boolean collidesWithPlayer(Player p) {
+        return ent1.collide(p) || ent2.collide(p);
     }
 }

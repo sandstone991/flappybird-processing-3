@@ -3,7 +3,7 @@ public class ScoreManager extends Tickable{
     private int score = -1 ;
 
     public ScoreManager() {
-        this.customFont = createFont("fonts/flappy-font.ttf", 32);
+        this.customFont = createFont("fonts/flappy-font.ttf", 40);
         textFont(customFont);
     }
 
@@ -21,6 +21,7 @@ public class ScoreManager extends Tickable{
 
     public void tick() {
         fill(0);
-        text(score, width/2, 20);
+        textSize(40);
+        text(score, width/2, 40);
     }
 }
