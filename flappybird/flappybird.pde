@@ -1,12 +1,18 @@
+Game game;
 void setup() {
-  size(displayWidth, displayHeight);
+  size(480, 320);
+  game = new Game();
 }
 
 void draw() {
-  if (mousePressed) {
-    fill(0);
-  } else {
-    fill(255);
+   background(255);
+   game.tick();
+}
+
+void mouseClicked() {
+  if(!game.isStarted()){
+    game.start();
+    return;
   }
-  ellipse(mouseX, mouseY, 80, 80);
+  game.playerFlyUp();
 }
