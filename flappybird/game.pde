@@ -77,6 +77,7 @@ public class Game extends Tickable {
         score.setScore(-1);
         obstacles = new ArrayList <ObstaclePair> ();
         isGameOver = false;
+        gameOverMenu = null;
         player = new Player();
     }
     public boolean isGameOver(){
