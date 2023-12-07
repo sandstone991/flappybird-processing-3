@@ -8,6 +8,7 @@ public class Player extends Entity {
     protected final int MAX_FALLSPEED = 5;
     protected boolean started = false;
     protected int currentSpirteIndex = 0;
+    protected int currentSpritieCounter = 0;
     protected String[] sprites = {"sprites/yellowbird-downflap.png", "sprites/yellowbird-midflap.png", "sprites/yellowbird-upflap.png"};
     public Player() {
         super(width/2, height/2, "sprites/yellowbird-downflap.png" , 34, 24);
@@ -30,7 +31,17 @@ public class Player extends Entity {
         facingUp = false;
       }
     }
-    
+    public void changeSprite(){
+      if(currentSpritieCounter == 5){
+        currentSpritieCounter = 0;
+        currentSpirteIndex++;
+        if(currentSpirteIndex == 3){
+          currentSpirteIndex = 0;
+        }
+        super.setCurrentSprite(sprites[currentSpirteIndex]);
+      }
+      currentSpritieCounter++;
+    }
     public void tick() {
         if (started) {
             speed += acceleration;
@@ -44,5 +55,6 @@ public class Player extends Entity {
         }
         super.moveBy(0, speed);
         super.draw();
+        changeSprite();
     }
 }
