@@ -7,11 +7,13 @@ public class Game extends Tickable {
     protected ScoreManager score;
     protected FloorPair floor;
     protected GameOverMenu gameOverMenu;
+    protected HighScoreManager highScoreManager;
     public Game() {
         player = new Player();
         obstacles = new ArrayList <ObstaclePair> ();
         score = new ScoreManager();
         floor = new FloorPair();
+        highScoreManager = new HighScoreManager();
     }
 
     private ObstaclePair getMinXCoordianteObstacle() {
@@ -51,7 +53,8 @@ public class Game extends Tickable {
     public void tick() {
         if(isGameOver) {
             if(gameOverMenu == null) {
-                gameOverMenu = new GameOverMenu(score.getScore());
+                highScoreManager.setHighScore(score.getScore());
+                gameOverMenu = new GameOverMenu(score.getScore(), highScoreManager.getHighScore());
             }
             gameOverMenu.tick();
             return;
