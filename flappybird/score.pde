@@ -1,7 +1,6 @@
 public class ScoreManager extends Tickable{
     private PFont customFont;
     private int score = -1 ;
-
     public ScoreManager() {
         this.customFont = createFont("fonts/flappy-font.ttf", 40);
         textFont(customFont);
