@@ -1,3 +1,6 @@
+import processing.sound.*;
+//weird hack to make sound work
+
 public class Game extends Tickable {
     protected Player player;
     protected ArrayList < ObstaclePair > obstacles;
@@ -8,12 +11,18 @@ public class Game extends Tickable {
     protected FloorPair floor;
     protected GameOverMenu gameOverMenu;
     protected HighScoreManager highScoreManager;
+    protected SoundFile scorePointSound;
+    protected SoundFile playerGetHitSound;
+    protected SoundFile playerFlySound;
     public Game() {
         player = new Player();
         obstacles = new ArrayList <ObstaclePair> ();
         score = new ScoreManager();
         floor = new FloorPair();
         highScoreManager = new HighScoreManager();
+        scorePointSound = new SoundFile(flappybird.this, "audio/point.wav");
+        playerGetHitSound = new SoundFile(flappybird.this, "audio/hit.wav");
+        playerFlySound = new SoundFile(flappybird.this, "audio/wing.wav");
     }
 
     private ObstaclePair getMinXCoordianteObstacle() {
@@ -29,6 +38,7 @@ public class Game extends Tickable {
         if (obstacles.size() < 2 && (min == null || min.getX() < width / 2)) {
             obstacles.add(new ObstaclePair());
             score.incScore();
+            scorePointSound.play();
         }
     }
     private void deleteOffScreenObstacles() {
@@ -69,6 +79,7 @@ public class Game extends Tickable {
             addNewObstacle();
             if(checkCollisions()){
                 isGameOver = true;
+                playerGetHitSound.play();
                 // GameOverMenu menu = new GameOverMenu(this.score.getScore(), this::restartGame);
             }
             score.tick();
@@ -95,5 +106,6 @@ public class Game extends Tickable {
     }
     public void playerFlyUp(){
       player.flyUp();
+      playerFlySound.play();
     }
 }
