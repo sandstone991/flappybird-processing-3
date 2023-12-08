@@ -1,5 +1,4 @@
 import processing.sound.*;
-//weird hack to make sound work
 
 public class Game extends Tickable {
     protected Player player;
