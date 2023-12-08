@@ -2,24 +2,21 @@ public class HighScoreManager{
     private int highscore;
     private final String path = "highscore.txt";
     public HighScoreManager() {
-         boolean fileExists = new File(path).exists();
-        if (!fileExists) {
-        PrintWriter writer = createWriter(path);
-        writer.println("0");
-        writer.flush();
-        writer.close();
+        String highscoreString = readHighScore();
+        if (highscoreString != null) {
+            highscore = Integer.parseInt(highscoreString);
         }
-        highscore = Integer.parseInt(readHighScore());
+        else {
+            highscore = 0;
+            writeHighscore(0);
+        }
     }
 
     private String readHighScore() {
-        BufferedReader reader = createReader(path);
-        String line;
-        try {
-          line = reader.readLine();
-        } catch (IOException e) {
-          e.printStackTrace();
-          line = null;
+        String line = null;
+        String[] lines = loadStrings(path);
+        if (lines != null) {
+            line = lines[0];
         }
         return line;
     }
@@ -34,9 +31,6 @@ public class HighScoreManager{
         }
     }
     public void writeHighscore(int score) {
-        PrintWriter writer = createWriter(path);
-        writer.println(score);
-        writer.flush();
-        writer.close();
+        saveStrings(path, new String[] {Integer.toString(score)});
     }
 }
