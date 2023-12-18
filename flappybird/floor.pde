@@ -1,5 +1,4 @@
 public class Floor extends Entity {
-    protected int speed = 2; 
 
     public Floor(int x) {
         super(x, height - 50, "sprites/base.png", width, 100);
